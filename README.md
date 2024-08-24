@@ -14,14 +14,9 @@ PyQAAI (Python QA AI) is an AI-driven command-line interface (CLI) tool for perf
 To install PyQAAI, make sure you have Python 3.10 or higher. You can install the package directly from the repository:
 
 ```bash
-pip install git+https://github.com/theaaviss/pyqaai.git
-```
-
-Or clone the repository and install it manually:
-
-```bash
 git clone https://github.com/theaaviss/pyqaai.git
 cd pyqaai
+python3 setup.py sdist bdist_wheel
 pip install .
 ```
 

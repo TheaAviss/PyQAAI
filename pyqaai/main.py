@@ -76,9 +76,7 @@ def check_and_set_openai_credentials():
 
 def main():
     openai_api_key, openai_organization = check_and_set_openai_credentials()
-    print(f"Using OpenAI API Key: {openai_api_key}")
-    print(f"Using OpenAI Organization: {openai_organization}")
-    
+
     code_analyser = CodeAnalyser()
     user_interface = UserInterface()
     llm = LLM(api_key=openai_api_key, organisation=openai_organization)
