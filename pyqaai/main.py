@@ -73,8 +73,26 @@ def check_and_set_openai_credentials():
     
     return openai_api_key, openai_organization
 
+welcome_message = r"""
+----------------------------------------------
+ _____        ____                      _____ 
+|  __ \      / __ \     /\        /\   |_   _|
+| |__) |   _| |  | |   /  \      /  \    | |  
+|  ___/ | | | |  | |  / /\ \    / /\ \   | |  
+| |   | |_| | |__| | / ____ \  / ____ \ _| |_ 
+|_|    \__, |\___\_\/_/    \_\/_/    \_\_____|
+        __/ |                                 
+        |___/     
+                                        
+Welcome to PyQAAI - Python Quality Assurance AI
+----------------------------------------------
+"""
+
 
 def main():
+    print(welcome_message)
+    print(f"Current Working Directory: {current_directory}\n")
+
     openai_api_key, openai_organization = check_and_set_openai_credentials()
 
     code_analyser = CodeAnalyser()
