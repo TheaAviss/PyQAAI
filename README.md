@@ -1,4 +1,5 @@
 # PyQAAI
+```
  _____        ____                      _____ 
 |  __ \      / __ \     /\        /\   |_   _|
 | |__) |   _| |  | |   /  \      /  \    | |  
@@ -7,7 +8,7 @@
 |_|    \__, |\___\_\/_/    \_\/_/    \_\_____|
         __/ |                                 
         |___/     
-
+```
 PyQAAI (Python Quality Assurance AI) is an AI-driven command-line interface (CLI) tool for performing automated quality assurance on Python code. Powered by OpenAI's language models, PyQAAI provides an easy way to perform a Quality Assurance check, analyse code, generate HTML reports, suggest code improvements and interact with an intelligent assistant to improve code quality.
 
 ## Features
