@@ -17,7 +17,7 @@ PyQAAI (Python Quality Assurance AI) is an AI-powered command-line tool that aut
 - **Interactive CLI**: Engage with a user-friendly command-line interface for seamless interaction.
 - **Automatic Code Improvement Suggestions**: Automatic Code Improvement Suggestions for any failing checks.
 - **Report Generation**: Generates detailed HTML reports based on the analysis.
-- **Customisation**: Configure your OpenAI credentials and other settings with ease with a built in one-time setup process
+- **Configuration**: Add your OpenAI credentials and other settings with ease with a built in one-time setup process
 
 ## Installation
 
@@ -71,10 +71,7 @@ When you run PyQAAI using the `pyqaai` command, you'll be guided through an intu
    - After selecting a task, the tool will execute the analysis. You will receive real-time feedback as the task runs, including progress updates and whether your code passes or fails the checks. The results are clearly indicated to help you understand areas that need improvement.
 
 #### 5. **HTML Report Generation**
-   - Once the analysis is complete, PyQAAI automatically generates an HTML report. This report includes a summary of the analysis, detailed findings, and suggested code improvements. The report is saved for you to review or share.
-
-#### 6. **Repeat or Exit**
-   - After completing a task, you can choose to return to the menu to perform additional tasks or exit the tool.
+   - Once the analysis is complete, PyQAAI automatically generates an HTML report. This report includes a summary of the analysis, detailed findings, and suggested code improvements. The report is saved for you and opened automatically to review or share.
 
 ## Dependencies
 
