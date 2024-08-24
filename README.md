@@ -31,7 +31,7 @@ pip install .
 
 ## Usage
 
-After installation, you can start using PyQAAI in any working directory by running the following command in your terminal:
+After installation, you can start using PyQAAI in any current working directory by running the following command in your terminal:
 
 ```bash
 pyqaai
