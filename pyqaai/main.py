@@ -91,7 +91,7 @@ Welcome to PyQAAI - Python Quality Assurance AI
 
 def main():
     print(welcome_message)
-    print(f"Current Working Directory: {current_directory}\n")
+    print(f"Current Working Directory: {os.getcwd()}\n")
 
     openai_api_key, openai_organization = check_and_set_openai_credentials()
 
