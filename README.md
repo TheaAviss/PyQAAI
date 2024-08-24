@@ -99,8 +99,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Author
 
 Developed by Thea Aviss.
-```
-
----
-
-This `README.md` provides an overview of the project, installation instructions, usage examples, and other relevant details. It is designed to be informative for users and contributors alike. If you have any additional details or modifications you'd like to include, feel free to let me know!
