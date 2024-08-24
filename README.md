@@ -40,29 +40,6 @@ If the API key is not set, you will be prompted to enter it. The key will be sav
 
 ### Interactive Menu
 
-When you run the PyQAAI tool using the `pyqaai` command, you'll enter an interactive session that guides you through the process of analyzing your Python code and generating reports. The session includes the following main components:
-
-#### 1. **Configuration Check**
-   - Upon first use, the tool will check for the presence of OpenAI credentials (API key and organization). If these credentials are not found, you will be prompted to enter them. The credentials will be stored securely in a configuration file for future sessions.
-
-I apologize for the oversight. Here’s the updated section of the `README.md` without code snippets and focusing purely on the interactive menu:
-
----
-
-### Interactive Menu
-
-I apologize for the oversight. Here’s the updated section of the `README.md` without code snippets and focusing purely on the interactive menu:
-
----
-
-### Interactive Menu
-
-Thank you for the additional detail. Here's the updated section, including information about what the tool collects during the analysis:
-
----
-
-### Interactive Menu
-
 When you run PyQAAI using the `pyqaai` command, you'll be guided through an intuitive interactive menu system designed to help you analyze your Python code efficiently.
 
 #### 1. **Select a Python File**
