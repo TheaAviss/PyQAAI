@@ -1,14 +1,12 @@
 from openai import OpenAI
 import json
-from dotenv import load_dotenv
 import os
-
-# Load the .env file
-load_dotenv()
 
 class LLM:
     def __init__(self, api_key:str, organisation:str, model: str = "gpt-4o-2024-05-13", temperature: float = 0.0, stream: bool = False):
         # Get the API key from the environment variable
+        print(f"API Key:'{api_key}'")
+        print(f"Organisation:'{organisation}'")
         self.client = OpenAI(organization=organisation, api_key=api_key)
         self.model = model
         self.temperature = temperature

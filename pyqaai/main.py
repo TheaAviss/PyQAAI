@@ -4,14 +4,15 @@ import warnings
 from dotenv import load_dotenv, set_key, dotenv_values
 import os
 import json
-from core.code_analyser import CodeAnalyser
-from core.user_interface import UserInterface
-from static.constants import TASK_CHOICES
-from core.llm import LLM
-from static.prompts import SYSTEM_PROMPT, QA_PROMPTS, SYSTEM_PROMPT_IMPROVEMENT
 from tqdm import tqdm
 from termcolor import colored
-from core.report_generator import HTMLReportGenerator
+
+from pyqaai.core.code_analyser import CodeAnalyser
+from pyqaai.core.user_interface import UserInterface
+from pyqaai.static.constants import TASK_CHOICES
+from pyqaai.core.llm import LLM
+from pyqaai.static.prompts import SYSTEM_PROMPT, QA_PROMPTS, SYSTEM_PROMPT_IMPROVEMENT
+from pyqaai.core.report_generator import HTMLReportGenerator
 
 warnings.filterwarnings("ignore")
 logging.getLogger().setLevel(logging.CRITICAL + 1)
@@ -19,46 +20,65 @@ logging.getLogger().setLevel(logging.CRITICAL + 1)
 for name in logging.root.manager.loggerDict:
     logging.getLogger(name).setLevel(logging.CRITICAL + 1)
 
-openai_api_key = None
-openai_organization = None
+current_directory = os.path.dirname(os.path.abspath(__file__))
+config_file_path = os.path.join(current_directory, 'config.json')
+
+def load_config():
+    # Check if config file exists
+    if not os.path.exists(config_file_path):
+        # Create a default config file
+        with open(config_file_path, 'w') as config_file:
+            json.dump({"OPENAI_API_KEY": "", "OPENAI_ORGANIZATION": ""}, config_file)
+
+    # Load existing config
+    with open(config_file_path, 'r') as config_file:
+        config = json.load(config_file)
+    
+    return config
+
+def save_config(config):
+    with open(config_file_path, 'w') as config_file:
+        json.dump(config, config_file, indent=4)
 
 def check_and_set_openai_credentials():
-    # Load environment variables from .env file
-    load_dotenv()
-    
+    config = load_config()
+
     # Check if OPENAI_API_KEY exists
-    openai_api_key = os.getenv('OPENAI_API_KEY')
-    
+    openai_api_key = config.get('OPENAI_API_KEY')
+
     if not openai_api_key:
-        print("OPENAI_API_KEY not found in .env file.")
+        print("OPENAI_API_KEY not found in config file.")
         
         # Prompt user to input their API key
         openai_api_key = input("Please enter your OPENAI_API_KEY: ")
         
-        # Save the API key to the .env file
-        dotenv_file = ".env"
-        set_key(dotenv_file, "OPENAI_API_KEY", openai_api_key)
-        print("OPENAI_API_KEY has been saved to .env file.")
+        # Save the API key to the config file
+        config['OPENAI_API_KEY'] = openai_api_key
+        save_config(config)
+        print("OPENAI_API_KEY has been saved to config file.")
     
     # Check if OPENAI_ORGANIZATION exists
-    openai_organization = os.getenv('OPENAI_ORGANIZATION')
-    
+    openai_organization = config.get('OPENAI_ORGANIZATION')
+
     if not openai_organization:
-        print("OPENAI_ORGANIZATION not found in .env file.")
+        print("OPENAI_ORGANIZATION not found in config file.")
         
         # Prompt user to input their organization ID
         openai_organization = input("Please enter your OPENAI_ORGANIZATION (if applicable): ")
         
-        # Save the organization ID to the .env file
-        if openai_organization:
-            set_key(dotenv_file, "OPENAI_ORGANIZATION", openai_organization)
-            print("OPENAI_ORGANIZATION has been saved to .env file.")
+        # Save the organization ID to the config file
+        config['OPENAI_ORGANIZATION'] = openai_organization
+        save_config(config)
+        print("OPENAI_ORGANIZATION has been saved to config file.")
     
     return openai_api_key, openai_organization
 
-def main():
-    check_and_set_openai_credentials()
 
+def main():
+    openai_api_key, openai_organization = check_and_set_openai_credentials()
+    print(f"Using OpenAI API Key: {openai_api_key}")
+    print(f"Using OpenAI Organization: {openai_organization}")
+    
     code_analyser = CodeAnalyser()
     user_interface = UserInterface()
     llm = LLM(api_key=openai_api_key, organisation=openai_organization)

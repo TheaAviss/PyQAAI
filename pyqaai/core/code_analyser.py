@@ -7,7 +7,7 @@ from typing import Dict, List, Tuple
 from concurrent.futures import ProcessPoolExecutor, as_completed
 import sys
 
-from models.models import CodeElement
+from pyqaai.models.models import CodeElement
 
 class SuppressOutput:
     def __enter__(self):

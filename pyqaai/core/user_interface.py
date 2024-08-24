@@ -2,7 +2,7 @@ import inquirer
 import sys
 import os
 from typing import List, NamedTuple, Dict, Union
-from models.models import CodeElement
+from pyqaai.models.models import CodeElement
 
 class UserInterface:
     @staticmethod
