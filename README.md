@@ -44,10 +44,10 @@ If the API key is not set, you will be prompted to enter it. The key will be sav
 
 ### Interactive Menu
 
-When you run PyQAAI using the `pyqaai` command, you'll be guided through an intuitive interactive menu system designed to help you analyze your Python code efficiently.
+When you run PyQAAI using the `pyqaai` command, you'll be guided through an intuitive interactive menu system designed to help you analyse your Python code efficiently.
 
 #### 1. **Select a Python File**
-   - The tool starts by listing all Python files in the *current working directory*. You'll be prompted to select the file you want to analyze. If no Python files are found, the tool will notify you and exit.
+   - The tool starts by listing all Python files in the *current working directory*. You'll be prompted to select the file you want to analyse. If no Python files are found, the tool will notify you and exit.
 
 #### 2. **Choose a Function or Class**
    - After selecting a Python file, you will then choose a specific function or class from that file. The tool displays all available functions and classes, allowing you to target your analysis.
