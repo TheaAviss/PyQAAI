@@ -59,6 +59,7 @@ When you run PyQAAI using the `pyqaai` command, you'll be guided through an intu
      - **Tier 1: Critical – Essential Checks, Bug Detection, and Security**
      - **Tier 2: Integrity – Testing, Code Quality, and Performance**
      - **Tier 3: Longevity – Documentation, Good Practice, and Maintainability**
+     - **Custom Task: Tailored help via Intelligent Code Assistant**
 
    Each tier focuses on different aspects of code quality, ranging from critical issues to best practices for long-term maintenance.
 
