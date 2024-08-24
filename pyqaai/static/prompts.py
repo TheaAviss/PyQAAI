@@ -29,7 +29,7 @@ QA_PROMPTS = {
             "Are there any potential type-related issues or mismatches?",
         ],
         "Exception Management": [
-            "How are exceptions managed? Are they specific and handled properly? or perhaps handled in callers (excluding any tests)?",
+            "How are exceptions managed? Are they specific and handled properly? or perhaps handled in callers (excluding any tests)? (Note: Please also consider situations where try catch blocks still need to return a value to continue execution. You can be flexible. Keep in mind the intended functioning and do not break flow.)",
         ],
         "Security Considerations": [
             "Are there any security considerations for this function, such as input validation or handling sensitive data?",

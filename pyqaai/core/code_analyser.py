@@ -78,20 +78,42 @@ class CodeAnalyser:
                 current_directory = parent_directory
 
     @staticmethod
-    def extract_functions_and_classes_from_module(file_path: str) -> Dict[str, str]:
+    def extract_functions_and_classes_from_module(file_path: str) -> Dict[str, CodeElement]:
         with open(file_path, 'r') as file:
-            tree = ast.parse(file.read())
+            source = file.read()
+            tree = ast.parse(source)
         
         functions_classes = {}
         
-        for node in ast.walk(tree):
-            if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
-                element_type = 'Function' if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) else 'Class'
+        def visit_node(node, parent_class=None):
+            if isinstance(node, ast.ClassDef):
                 name = node.name
-                code = ast.get_source_segment(open(file_path).read(), node)
+                element_type = 'Class'
+                code = ast.get_source_segment(source, node)
                 lineno = node.lineno
-                
                 functions_classes[name] = CodeElement(element_type=element_type, name=name, code=code, lineno=lineno)
+                
+                # Visit all child nodes with this class as the parent
+                for child in ast.iter_child_nodes(node):
+                    visit_node(child, parent_class=name)
+            
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                element_type = 'Function'
+                if parent_class:
+                    name = f"{parent_class}.{node.name}"
+                else:
+                    name = node.name
+                code = ast.get_source_segment(source, node)
+                lineno = node.lineno
+                functions_classes[name] = CodeElement(element_type=element_type, name=name, code=code, lineno=lineno)
+            
+            else:
+                # For other node types, continue visiting child nodes
+                for child in ast.iter_child_nodes(node):
+                    visit_node(child, parent_class=parent_class)
+
+        # Start visiting from the root of the AST
+        visit_node(tree)
 
         return functions_classes
 

@@ -10,21 +10,27 @@ class LLM:
         self.temperature = temperature
         self.stream = stream
 
-    def _prepare_messages(self, system_prompt: str, import_statements: str, local_imported_functions_classes: str, caller_methods: str, qa_code: str, invoked_functions: str) -> list[dict[str, str]]:
+    def _prepare_messages(self, system_prompt: str, custom_override: str | None = None, import_statements: str | None = None, local_imported_functions_classes: str | None = None, caller_methods: str | None = None, qa_code: str | None = None, invoked_functions: str | None = None) -> list[dict[str, str]]:
         """
         Prepares the list of messages to send to the model, including system and user prompts.
         """
 
-        user_message = (
-            "--CODE STARTING--\n\n"
-            f"Import Statements:\n{import_statements}\n\n"
-            f"Locally Imported Functions/Classes:\n{local_imported_functions_classes}\n\n"
-            f"Caller Methods:\n{caller_methods}\n\n"
-            f"Invoked Functions:\n{invoked_functions}\n"
-            "------\n"
-            f"Code to perform QA Checks on:\n{qa_code}"
-        )
-        
+        if not custom_override:
+            user_message = "--CODE STARTING--\n\n"
+            if import_statements:
+                user_message += f"Import Statements:\n{import_statements}\n\n"
+            if local_imported_functions_classes:
+                user_message += f"Locally Imported Functions/Classes:\n{local_imported_functions_classes}\n\n"
+            if caller_methods:
+                user_message += f"Caller Methods:\n{caller_methods}\n\n"
+            if invoked_functions:
+                user_message += f"Invoked Functions:\n{invoked_functions}\n"
+            user_message += "------\n"
+            if qa_code:
+                user_message += f"Code to perform QA Checks on:\n{qa_code}"
+        else:
+            user_message = custom_override
+
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
@@ -33,12 +39,19 @@ class LLM:
         return messages
 
 
-    def generate_response(self, system_prompt: str, import_statements: str, local_imported_functions_classes: str, caller_methods: str, qa_code: str, invoked_functions: str) -> dict | None:
+    def generate_response(self, 
+                        system_prompt: str, 
+                        custom_override: str | None = None, 
+                        import_statements: list[str] | None = None, 
+                        local_imported_functions_classes: dict[str, any] | None = None, 
+                        caller_methods: list[str] | None = None, 
+                        qa_code: str | None = None, 
+                        invoked_functions: list[str] | None = None) -> None:
         """
         Generates a response using the GPT model with the given inputs.
         """
         try:
-            prepared_messages = self._prepare_messages(system_prompt, import_statements, local_imported_functions_classes, caller_methods, qa_code, invoked_functions)
+            prepared_messages = self._prepare_messages(system_prompt, custom_override, import_statements, local_imported_functions_classes, caller_methods, qa_code, invoked_functions)
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=prepared_messages,
