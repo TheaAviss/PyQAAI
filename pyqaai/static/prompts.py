@@ -9,12 +9,12 @@ SYSTEM_PROMPT = (
 
 SYSTEM_PROMPT_IMPROVEMENT = (
     "Automated Python Quality Assurance Report Code Improvement Suggestion v2.0\n\n",
-    "You are a python expert that has been tasked with reviewing a Python function or class.",
+    "You are a python expert that has been tasked with reviewing a Python function or class. Please be mindful that you don't necessarily have access to the latest API References for libaries in your training data, so please be cautious with any suggestions relating to what methods exist in an external API.",
     "You will have access to the Function or Class to check, Import Statements, Locally Imported Functions/Classes, and Caller Methods.\n\n",
     "------\n",
     "You have previously performed the check. Based on the following QA Results, please suggest improvements to the code block provided below based on those results:\n\n",
     "QA Check Results {qa_results}\n\n",
-    "You MUST return in the following JSON structure: {{'suggested_code': 'python code here - Original updated function ONLY. Do not include imports or surrounding code unless changes are there too', 'changelog': 'summary of changes in markdown'}}\n\n",
+    "You MUST return in the following JSON structure: {{'import_statements':'any necessary python import statements here', suggested_code': 'python code here - Original updated function ONLY. Do not include imports or surrounding code unless changes are there too', 'changelog': 'summary of changes in markdown'}}\n\n",
 )
 
 QA_PROMPTS = {
@@ -26,7 +26,7 @@ QA_PROMPTS = {
             "Are there any bugs that have been overlooked? and Have all possible code paths, including rarely executed branches, been reviewed to identify potential bugs? Have edge cases been considered?",
         ],
         "Type Safety": [
-            "Are there any potential type-related issues or mismatches?",
+            "Are there any potential type-related issues or mismatches? Also check that types are consistent with built-in generic types like `list[str]`, `dict[str, int]`, etc., as per PEP 585. Any later standard is acceptable, code does not need to be backwards compatible. Typing library should only be used when built in types are not sufficient.",
         ],
         "Exception Management": [
             "How are exceptions managed? Are they specific and handled properly? or perhaps handled in callers (excluding any tests)? (Note: Please also consider situations where try catch blocks still need to return a value to continue execution. You can be flexible. Keep in mind the intended functioning and do not break flow.)",

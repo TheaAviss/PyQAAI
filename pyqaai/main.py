@@ -25,23 +25,40 @@ def main():
     print(WELCOME_MESSAGE)
     print(f"Current Working Directory: {os.getcwd()}\n")
 
-    openai_api_key, openai_organization = check_and_set_openai_credentials()
+    try:
+        openai_api_key, openai_organization = check_and_set_openai_credentials()
+    except Exception as e:
+        print(f"Error retrieving OpenAI credentials: {e}")
+        sys.exit(1)
 
     code_analyser = CodeAnalyser()
     user_interface = UserInterface()
     llm = LLM(api_key=openai_api_key, organisation=openai_organization)
     
-    file_path = user_interface.select_python_file()
-    functions_classes = code_analyser.extract_functions_and_classes_from_module(file_path)
+    try:
+        file_path = user_interface.select_python_file()
+        if file_path is None:
+            print("Exiting...")
+            sys.exit(1)
+        functions_classes = code_analyser.extract_functions_and_classes_from_module(file_path)
+    except Exception as e:
+        print(f"Error processing file: {e}")
+        sys.exit(1)
     
     if not functions_classes:
         print(f"No functions or classes found in {file_path}.")
         sys.exit(1)
     
     selected_function_class_full = user_interface.select_function_or_class(functions_classes)
+    if selected_function_class_full is None:
+        print("Exiting...")
+        sys.exit(1)
     selected_function_class = selected_function_class_full.split(".")[-1]
 
     selected_task = user_interface.select_task(TASK_CHOICES)
+    if selected_task is None:
+        print("Exiting...")
+        sys.exit(1)
 
     print(f"You selected: {selected_task}")
     print("---")
@@ -187,7 +204,8 @@ def main():
     if response:
         report_generator.add_header("Suggested Code Improvement:", level=2, index=4)
         report_generator.add_paragraph(response["changelog"], index=5)
-        report_generator.add_code_block(response["suggested_code"], index=6)
+        report_generator.add_code_block(response["import_statements"], index=6)
+        report_generator.add_code_block(response["suggested_code"], index=7)
         
     report_generator.save_report()
     report_generator.open_report()

@@ -9,11 +9,13 @@
         __/ |                                 
         |___/     
 ```
-PyQAAI (Python Quality Assurance AI) is an AI-powered command-line tool that automates the quality assurance process for Python code.  PyQAAI seamlessly performs comprehensive code analysis using AST, executes automated QA checks, generates detailed HTML reports, and suggests code improvements. By harnessing the power of a guided intelligent assistant, PyQAAI enhances your code quality, making it an essential tool for maintaining high standards in Python development projects.
+PyQAAI (Python Quality Assurance AI) is an AI-powered command-line tool that automates the quality assurance process for Python code.  PyQAAI seamlessly performs comprehensive code analysis using AST, executes automated QA checks, generates detailed HTML reports, and suggests code improvements. By harnessing the power of a guided intelligent assistant, PyQAAI enhances your code quality, making it an essential tool for maintaining high standards in Python development projects. 
+
+Note: This tool shouldn't be treated as infallible and one is advised not to blindly copy/paste any suggested code improvements, but rather use this tool as a way to check for things you might have missed or get ideas for general improvements.
 
 ## Features
 
-- **Automated Code Analysis**: Utilises a SoTA LLM to analyse your Python code for potential issues, best practices, and improvements.
+- **Automated Code Analysis**: Utilises AST and a SoTA LLM to analyse your Python code for potential issues, best practices, and improvements.
 - **Interactive CLI**: Engage with a user-friendly command-line interface for seamless interaction.
 - **Automatic Code Improvement Suggestions**: Automatic Code Improvement Suggestions for any failing checks.
 - **Report Generation**: Generates detailed HTML reports based on the analysis.

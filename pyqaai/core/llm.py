@@ -1,10 +1,11 @@
 from openai import OpenAI
 import json
-import os
+from typing import Any
 
 class LLM:
-    def __init__(self, api_key:str, organisation:str, model: str = "gpt-4o-2024-05-13", temperature: float = 0.0, stream: bool = False):
-        # Get the API key from the environment variable
+    def __init__(self, api_key: str, organisation: str, model: str = "gpt-4o-2024-05-13", temperature: float = 0.0, stream: bool = False):
+        if not api_key or not organisation:
+            raise ValueError("API key and organisation must be provided")
         self.client = OpenAI(organization=organisation, api_key=api_key)
         self.model = model
         self.temperature = temperature
@@ -14,7 +15,6 @@ class LLM:
         """
         Prepares the list of messages to send to the model, including system and user prompts.
         """
-
         if not custom_override:
             user_message = "--CODE STARTING--\n\n"
             if import_statements:
@@ -35,18 +35,16 @@ class LLM:
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": user_message}
         ]
-        
         return messages
-
 
     def generate_response(self, 
                         system_prompt: str, 
                         custom_override: str | None = None, 
                         import_statements: list[str] | None = None, 
-                        local_imported_functions_classes: dict[str, any] | None = None, 
+                        local_imported_functions_classes: dict[str, Any] | None = None, 
                         caller_methods: list[str] | None = None, 
                         qa_code: str | None = None, 
-                        invoked_functions: list[str] | None = None) -> None:
+                        invoked_functions: list[str] | None = None) -> dict | None:
         """
         Generates a response using the GPT model with the given inputs.
         """
@@ -60,18 +58,13 @@ class LLM:
                 response_format={ "type": "json_object" },
             )
 
-            message = response.choices[0].message.content
-
-            # print(f"Message: {message}")
-
-            if response.choices[0]:
+            if response.choices and response.choices[0].message.content:
+                message = response.choices[0].message.content
                 content = json.loads(message)
                 return content
-            
             else:
                 print("No content found in the response.")
                 return None
-        
         except Exception as e:
             print(f"An error occurred: {e}")
             return None

@@ -11,7 +11,7 @@ class UserInterface:
         
         if not py_files:
             print("No Python files found in the current directory.")
-            sys.exit(1)
+            return None
         
         questions = [
             inquirer.List('file',
@@ -20,6 +20,9 @@ class UserInterface:
                          ),
         ]
         answers = inquirer.prompt(questions)
+        if answers is None:
+            print("No file selected.")
+            return None
         return answers['file']
 
     @staticmethod
@@ -37,13 +40,16 @@ class UserInterface:
                          ),
         ]
         answers = inquirer.prompt(questions)
+        if answers is None:
+            print("No function or class selected.")
+            return None
         selected = answers['function_class']
         
         return selected.split(': ')[1].split(' (line ')[0]
 
 
     @staticmethod
-    def select_task(task_choices: list[str]) -> str:
+    def select_task(task_choices: List[str]) -> str:
         questions = [
             inquirer.List('task',
                           message="Select a task to perform on the selected function/class",
@@ -51,4 +57,7 @@ class UserInterface:
                          ),
         ]
         task_answer = inquirer.prompt(questions)
+        if task_answer is None:
+            print("No task selected.")
+            return None
         return task_answer['task']
