@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyqaai"
+version = "0.1.6"
+description = "AI Driven Python QA CLI"
+authors = [{name = "Thea Aviss"}]
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "openai",        # OpenAI API client
+    "tqdm",          # Progress bar library
+    "inquirer",      # Command-line interface library
+    "termcolor",     # Colored terminal output
+    "requests",      # HTTP requests library
+    "markdown",      # Markdown to HTML converter
+]
+
+[project.scripts]
+pyqaai = "pyqaai.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
