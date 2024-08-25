@@ -24,7 +24,7 @@ While this tool is invaluable for identifying potential issues and enhancing you
 
 ## Installation
 
-To install PyQAAI, make sure you have Python >=3.10. You can install directly via `pip` [package link](https://pypi.org/project/pyqaai/0.1.6/):
+To install PyQAAI, make sure you have Python >=3.10. You can install directly via `pip`:
 
 ```
 pip install pyqaai
