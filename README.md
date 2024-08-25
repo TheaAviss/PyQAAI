@@ -29,7 +29,7 @@ To install PyQAAI, make sure you have Python 3.10 or higher. You can install the
 ```bash
 git clone https://github.com/theaaviss/pyqaai.git
 cd pyqaai
-python3 setup.py sdist bdist_wheel
+python3 -m build
 pip install .
 ```
 
