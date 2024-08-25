@@ -1,17 +1,20 @@
 from openai import OpenAI
 import json
-from typing import Any
+from typing import Any, Optional
 
 class LLM:
     def __init__(self, api_key: str, organisation: str, model: str = "gpt-4o-2024-05-13", temperature: float = 0.0, stream: bool = False):
         if not api_key or not organisation:
             raise ValueError("API key and organisation must be provided")
-        self.client = OpenAI(organization=organisation, api_key=api_key)
+        try:
+            self.client = OpenAI(organization=organisation, api_key=api_key)
+        except Exception as e:
+            raise ValueError(f"Failed to initialize OpenAI client: {e}")
         self.model = model
         self.temperature = temperature
         self.stream = stream
 
-    def _prepare_messages(self, system_prompt: str, custom_override: str | None = None, import_statements: str | None = None, local_imported_functions_classes: str | None = None, caller_methods: str | None = None, qa_code: str | None = None, invoked_functions: str | None = None) -> list[dict[str, str]]:
+    def _prepare_messages(self, system_prompt: str, custom_override: Optional[str] = None, import_statements: Optional[list[str]] = None, local_imported_functions_classes: Optional[dict[str, Any]] = None, caller_methods: Optional[list[str]] = None, qa_code: Optional[str] = None, invoked_functions: Optional[list[str]] = None) -> list[dict[str, str]]:
         """
         Prepares the list of messages to send to the model, including system and user prompts.
         """
@@ -39,12 +42,12 @@ class LLM:
 
     def generate_response(self, 
                         system_prompt: str, 
-                        custom_override: str | None = None, 
-                        import_statements: list[str] | None = None, 
-                        local_imported_functions_classes: dict[str, Any] | None = None, 
-                        caller_methods: list[str] | None = None, 
-                        qa_code: str | None = None, 
-                        invoked_functions: list[str] | None = None) -> dict | None:
+                        custom_override: Optional[str] = None, 
+                        import_statements: Optional[list[str]] = None, 
+                        local_imported_functions_classes: Optional[dict[str, Any]] = None, 
+                        caller_methods: Optional[list[str]] = None, 
+                        qa_code: Optional[str] = None, 
+                        invoked_functions: Optional[list[str]] = None) -> Optional[dict[str, Any]]:
         """
         Generates a response using the GPT model with the given inputs.
         """
@@ -65,6 +68,12 @@ class LLM:
             else:
                 print("No content found in the response.")
                 return None
+        except json.JSONDecodeError as e:
+            print(f"JSON decode error: {e}")
+            return None
+        except (ConnectionError, TimeoutError) as e:
+            print(f"Network error: {e}")
+            return None
         except Exception as e:
             print(f"An error occurred: {e}")
             return None

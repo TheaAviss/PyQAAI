@@ -130,58 +130,57 @@ def main():
 
     elif task_key in QA_PROMPTS:
         checks = QA_PROMPTS[task_key]
-        total_questions = sum(len(questions) for questions in checks.values())
+        total_questions = len(checks.items())
 
         with tqdm(total=total_questions, desc="QA Check", unit="check", dynamic_ncols=True, leave=True) as pbar:
             filled_structure = []
 
             # Iterate over each category and its checks
-            for category, questions in checks.items():
+            for category, question in checks.items():
                 report_generator.add_header(category, level=2)
 
-                for question in questions:
-                    # Prepare the initial return structure
-                    return_structure = {
-                        "qa_check_prompt": f"{category}: {question}",
-                        "pass": "True or False",  # Placeholder for LLM to decide
-                        "justification": "Detailed technical prose explanation in markdown for 'pass' verdict."  # Placeholder for LLM to provide reasoning
-                    }
+                # Prepare the initial return structure
+                return_structure = {
+                    "qa_check_prompt": f"{category}: {question}",
+                    "pass": "True or False",  # Placeholder for LLM to decide
+                    "justification": "Detailed technical prose explanation in markdown for 'pass' verdict."  # Placeholder for LLM to provide reasoning
+                }
 
-                    # Prepare the system prompt with the current question and return structure
-                    system_prompt = "\n".join(SYSTEM_PROMPT).format(filled_structure=return_structure)
+                # Prepare the system prompt with the current question and return structure
+                system_prompt = "\n".join(SYSTEM_PROMPT).format(filled_structure=return_structure)
 
-                    # Get the LLM response
-                    response = llm.generate_response(
-                        system_prompt=system_prompt,
-                        import_statements=import_statements,
-                        local_imported_functions_classes=local_imported_functions_classes,
-                        caller_methods=caller_methods,
-                        qa_code=qa_code,
-                        invoked_functions=invoked_functions
-                    )
+                # Get the LLM response
+                response = llm.generate_response(
+                    system_prompt=system_prompt,
+                    import_statements=import_statements,
+                    local_imported_functions_classes=local_imported_functions_classes,
+                    caller_methods=caller_methods,
+                    qa_code=qa_code,
+                    invoked_functions=invoked_functions
+                )
 
-                    if response:
-                        # Process the response and update the return structure accordingly
-                        filled_structure.append(response)
+                if response:
+                    # Process the response and update the return structure accordingly
+                    filled_structure.append(response)
 
-                        # Check if the response passes
-                        passed = response.get("pass") == "True"
-                        justification = response.get("justification", "No justification provided.")
-                        report_generator.add_result(question, passed, justification)
+                    # Check if the response passes
+                    passed = response.get("pass") == "True"
+                    justification = response.get("justification", "No justification provided.")
+                    report_generator.add_result(question, passed, justification)
 
-                        if passed:
-                            # Update progress bar color and print question with a green checkmark
-                            pbar.colour = "green"
-                            tqdm.write(f"{category} {colored('✓', 'green')}")
-                        else:
-                            # Update progress bar color and print question with a red checkmark
-                            pbar.colour = "red"
-                            tqdm.write(f"{category} {colored('✗', 'red')}")
+                    if passed:
+                        # Update progress bar color and print question with a green checkmark
+                        pbar.colour = "green"
+                        tqdm.write(f"{category} {colored('✓', 'green')}")
                     else:
-                        tqdm.write("Failed to generate a response.")
-                    
-                    # Update the progress bar
-                    pbar.update(1)
+                        # Update progress bar color and print question with a red checkmark
+                        pbar.colour = "red"
+                        tqdm.write(f"{category} {colored('✗', 'red')}")
+                else:
+                    tqdm.write("Failed to generate a response.")
+                
+                # Update the progress bar
+                pbar.update(1)
 
     else:
         print("Selected task does not match any known QA checks.")
